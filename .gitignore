@@ -10,3 +10,21 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+/.idea
+/.gradle
+/gradle
+/build
+/out
+/jar
+/lib
+.idea
+*.jar
+gradlew
+*.gradle
+*.iws
+*.iml
+*.ipr
+pom.xml
+.gitignore
+.xml

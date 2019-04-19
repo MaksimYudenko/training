@@ -1,0 +1,130 @@
+syntax = "proto3";
+package v1;
+
+import "google/api/annotations.proto";
+
+// Main task
+message Trainee {
+    // Unique integer identifier
+    int64 id = 1;
+    // Trainee first name
+    string name = 2;
+    // Trainee last name
+    string surname = 3;
+    // Trainee e-mail
+    string email = 4;
+    // Trainee attendance
+    bool hasAttend = 5;
+    // Points number received for the task
+    int32 score = 6;
+}
+// Request data to create new trainee
+message CreateRequest {
+    // API versioning: specify version explicitly
+    string api = 1;
+    // Task entity to add
+    Trainee trainee = 2;
+}
+// Contains data of created trainee
+message CreateResponse {
+    // API versioning: specify version explicitly
+    string api = 1;
+    // ID of created trainee
+    int64 id = 2;
+}
+// Request data to read trainee
+message ReadRequest {
+    // API versioning: specify version explicitly
+    string api = 1;
+    // Unique integer identifier
+    int64 id = 2;
+}
+// Contains trainee data specified in by ID request
+message ReadResponse {
+    // API versioning: specify version explicitly
+    string api = 1;
+    // Task entity read by ID
+    Trainee trainee = 2;
+}
+// Request data to update trainee
+message UpdateRequest {
+    // API versioning: specify version explicitly
+    string api = 1;
+    // Task entity to update
+    Trainee trainee = 2;
+}
+// Contains status of update operation
+message UpdateResponse {
+    // API versioning: specify version explicitly
+    string api = 1;
+    // Contains number of entities have been updated
+    // Equals 1 in case of successful update
+    int64 updated = 2;
+}
+// Request data to delete trainee
+message DeleteRequest {
+    // API versioning: specify version explicitly
+    string api = 1;
+    // Unique integer identifier to delete
+    int64 id = 2;
+}
+// Contains status of delete operation
+message DeleteResponse {
+    // API versioning: specify version explicitly
+    string api = 1;
+    // Contains number of entities have been deleted
+    // Equals 1 in case of successful delete
+    int64 deleted = 2;
+}
+// Request data to read all trainees
+message ReadAllRequest {
+    // API versioning: specify version explicitly
+    string api = 1;
+}
+// Contains list of all trainees
+message ReadAllResponse {
+    // API versioning: specify version explicitly
+    string api = 1;
+    // List of all trainees
+    repeated Trainee trainees = 2;
+}
+// Service to manage list of trainees
+service TraineeService {
+    // Create new trainee
+    rpc Create (CreateRequest) returns (CreateResponse) {
+        option (google.api.http) = {
+            post: "/v1/training"
+            body: "*"
+        };
+    }
+    // Read trainee
+    rpc Read (ReadRequest) returns (ReadResponse) {
+        option (google.api.http) = {
+            get: "/v1/training/{id}"
+        };
+    }
+    // Update trainee
+    rpc Update (UpdateRequest) returns (UpdateResponse) {
+        option (google.api.http) = {
+            put: "/v1/training/{trainee.id}"
+            body: "*"
+
+            additional_bindings {
+                patch: "/v1/training/{trainee.id}"
+                body: "*"
+            }
+        };
+    }
+    // Delete trainee
+    rpc Delete (DeleteRequest) returns (DeleteResponse) {
+        option (google.api.http) = {
+            delete: "/v1/training/{id}"
+        };
+    }
+    // Read all trainees
+    rpc ReadAll (ReadAllRequest) returns (ReadAllResponse) {
+        option (google.api.http) = {
+            get: "/v1/training"
+        };
+    }
+}

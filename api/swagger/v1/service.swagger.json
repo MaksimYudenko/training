@@ -1,0 +1,343 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "service.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/training": {
+      "get": {
+        "summary": "Read all trainees",
+        "operationId": "ReadAll",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ReadAllResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "api",
+            "description": "API versioning: specify version explicitly.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TraineeService"
+        ]
+      },
+      "post": {
+        "summary": "Create new trainee",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TraineeService"
+        ]
+      }
+    },
+    "/v1/training/{id}": {
+      "get": {
+        "summary": "Read trainee",
+        "operationId": "Read",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Unique integer identifier",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "api",
+            "description": "API versioning: specify version explicitly.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TraineeService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete trainee",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Unique integer identifier to delete",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "api",
+            "description": "API versioning: specify version explicitly.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TraineeService"
+        ]
+      }
+    },
+    "/v1/training/{trainee.id}": {
+      "put": {
+        "summary": "Update trainee",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "trainee.id",
+            "description": "Unique integer identifier",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TraineeService"
+        ]
+      },
+      "patch": {
+        "summary": "Update trainee",
+        "operationId": "Update2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "trainee.id",
+            "description": "Unique integer identifier",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TraineeService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "v1CreateRequest": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string",
+          "title": "API versioning: specify version explicitly"
+        },
+        "trainee": {
+          "$ref": "#/definitions/v1Trainee",
+          "title": "Task entity to add"
+        }
+      },
+      "title": "Request data to create new trainee"
+    },
+    "v1CreateResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string",
+          "title": "API versioning: specify version explicitly"
+        },
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "ID of created trainee"
+        }
+      },
+      "title": "Contains data of created trainee"
+    },
+    "v1DeleteResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string",
+          "title": "API versioning: specify version explicitly"
+        },
+        "deleted": {
+          "type": "string",
+          "format": "int64",
+          "title": "Contains number of entities have been deleted\nEquals 1 in case of successful delete"
+        }
+      },
+      "title": "Contains status of delete operation"
+    },
+    "v1ReadAllResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string",
+          "title": "API versioning: specify version explicitly"
+        },
+        "trainees": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Trainee"
+          },
+          "title": "List of all trainees"
+        }
+      },
+      "title": "Contains list of all trainees"
+    },
+    "v1ReadResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string",
+          "title": "API versioning: specify version explicitly"
+        },
+        "trainee": {
+          "$ref": "#/definitions/v1Trainee",
+          "title": "Task entity read by ID"
+        }
+      },
+      "title": "Contains trainee data specified in by ID request"
+    },
+    "v1Trainee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "Unique integer identifier"
+        },
+        "name": {
+          "type": "string",
+          "title": "Trainee first name"
+        },
+        "surname": {
+          "type": "string",
+          "title": "Trainee last name"
+        },
+        "email": {
+          "type": "string",
+          "title": "Trainee e-mail"
+        },
+        "hasAttend": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Trainee attendance"
+        },
+        "score": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Points number received for the task"
+        }
+      },
+      "title": "Main task"
+    },
+    "v1UpdateRequest": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string",
+          "title": "API versioning: specify version explicitly"
+        },
+        "trainee": {
+          "$ref": "#/definitions/v1Trainee",
+          "title": "Task entity to update"
+        }
+      },
+      "title": "Request data to update trainee"
+    },
+    "v1UpdateResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string",
+          "title": "API versioning: specify version explicitly"
+        },
+        "updated": {
+          "type": "string",
+          "format": "int64",
+          "title": "Contains number of entities have been updated\nEquals 1 in case of successful update"
+        }
+      },
+      "title": "Contains status of update operation"
+    }
+  }
+}
