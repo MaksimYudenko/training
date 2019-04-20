@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"github.com/MaksimYudenko/training/finalTask/pkg/protocol/grpc"
-	"github.com/MaksimYudenko/training/finalTask/pkg/protocol/rest"
-	"github.com/MaksimYudenko/training/finalTask/pkg/service/v1"
+	"github.com/MaksimYudenko/training/pkg/protocol/grpc"
+	"github.com/MaksimYudenko/training/pkg/protocol/rest"
+	"github.com/MaksimYudenko/training/pkg/service/v1"
 	_ "github.com/lib/pq"
 )
 
@@ -19,19 +19,13 @@ type Config struct {
 	// HTTP/REST gateway start parameters section
 	// HTTPPort is TCP port to listen by HTTP/REST gateway
 	HTTPPort string
-	// DB Datastore parameters section
-	// DatastoreDBHost is host of database
-	DatastoreDBHost string
-	// DatastoreDBPort is port of database
-	DatastoreDBPort int
-	// DatastoreDBName is data base name
-	DatastoreDBName string
-	// DatastoreDBUser is username to connect to database
-	DatastoreDBUser string
-	// DatastoreDBPassword password to connect to database
-	DatastoreDBPassword string
-	// DatastoreDBSchema is schema of database
-	DatastoreDBSchema string
+	// DB parameters section
+	dbHost     string
+	dbPort     int
+	dbName     string
+	dbUser     string
+	dbPassword string
+	dbSchema   string
 }
 
 // RunServer runs gRPC server and HTTP gateway
@@ -41,12 +35,12 @@ func RunServer() error {
 	var cfg Config
 	flag.StringVar(&cfg.GRPCPort, "grpc-port", "", "gRPC port to bind")
 	flag.StringVar(&cfg.HTTPPort, "http-port", "", "HTTP port to bind")
-	flag.StringVar(&cfg.DatastoreDBHost, "db-host", "localhost", "Database host")
-	flag.IntVar(&cfg.DatastoreDBPort, "db-port", 5432, "Database port")
-	flag.StringVar(&cfg.DatastoreDBName, "db-name", "", "Database name")
-	flag.StringVar(&cfg.DatastoreDBUser, "db-user", "", "Database user")
-	flag.StringVar(&cfg.DatastoreDBPassword, "db-password", "", "Database password")
-	flag.StringVar(&cfg.DatastoreDBSchema, "db-schema", "public", "Database schema")
+	flag.StringVar(&cfg.dbHost, "db-host", "localhost", "Database host")
+	flag.IntVar(&cfg.dbPort, "db-port", 5432, "Database port")
+	flag.StringVar(&cfg.dbName, "db-name", "", "Database name")
+	flag.StringVar(&cfg.dbUser, "db-user", "", "Database user")
+	flag.StringVar(&cfg.dbPassword, "db-password", "", "Database password")
+	flag.StringVar(&cfg.dbSchema, "db-schema", "public", "Database schema")
 	flag.Parse()
 	if len(cfg.GRPCPort) == 0 {
 		return fmt.Errorf("invalid TCP port for gRPC server: '%s'", cfg.GRPCPort)
@@ -56,12 +50,7 @@ func RunServer() error {
 	}
 	dsn := fmt.Sprintf("host=%s port=%d dbname=%s "+
 		"user=%s password=%s sslmode=disable search_path=%s",
-		cfg.DatastoreDBHost,
-		cfg.DatastoreDBPort,
-		cfg.DatastoreDBName,
-		cfg.DatastoreDBUser,
-		cfg.DatastoreDBPassword,
-		cfg.DatastoreDBSchema)
+		cfg.dbHost, cfg.dbPort, cfg.dbName, cfg.dbUser, cfg.dbPassword, cfg.dbSchema)
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		return fmt.Errorf("failed to open database: %v", err)

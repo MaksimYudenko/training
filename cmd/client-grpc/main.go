@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/MaksimYudenko/training/finalTask/pkg/api/v1"
+	"github.com/MaksimYudenko/training/pkg/api/v1"
 	"google.golang.org/grpc"
 	"log"
 	"time"

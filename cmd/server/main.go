@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/MaksimYudenko/training/finalTask/pkg/cmd"
+	"github.com/MaksimYudenko/training/pkg/cmd"
 	"os"
 )
 

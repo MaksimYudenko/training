@@ -1,7 +1,7 @@
 syntax = "proto3";
 package v1;
 
-import "google/api/annotations.proto";
+import "third_party/google/api/annotations.proto";
 
 // Main task
 message Trainee {

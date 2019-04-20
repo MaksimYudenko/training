@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/MaksimYudenko/training/finalTask/pkg/api/v1"
+	"github.com/MaksimYudenko/training/pkg/api/v1"
 )
 
 const (
