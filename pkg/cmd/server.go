@@ -35,7 +35,7 @@ func RunServer() error {
 	var cfg Config
 	flag.StringVar(&cfg.GRPCPort, "grpc-port", "", "gRPC port to bind")
 	flag.StringVar(&cfg.HTTPPort, "http-port", "", "HTTP port to bind")
-	flag.StringVar(&cfg.dbHost, "db-host", "localhost", "Database host")
+	flag.StringVar(&cfg.dbHost, "db-host", "", "Database host")
 	flag.IntVar(&cfg.dbPort, "db-port", 5432, "Database port")
 	flag.StringVar(&cfg.dbName, "db-name", "", "Database name")
 	flag.StringVar(&cfg.dbUser, "db-user", "", "Database user")

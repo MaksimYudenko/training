@@ -11,19 +11,17 @@ services:
     network_mode: host
     ports:
       - "9090:9090"
-      - "5432:5432"
-
   client-rest:
     build: ./cmd/client-rest
     network_mode: host
     ports:
       - "8080:8080"
-      - "5432:5432"
-
   database:
-    build: ./cmd/
+    image: "postgres:alpine"
+    container_name: "postgres"
     ports:
       - "5432:5432"
-
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
 volumes:
-  server_db:
+  my_dbdata:
