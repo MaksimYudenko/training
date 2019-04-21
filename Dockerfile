@@ -1,18 +1,34 @@
-# iron/go:dev is the alpine image with the go tools added
-FROM iron/go:dev
-WORKDIR /app
-# Set an env var that matches your github repo name, replace treeder/dockergo here with your repo name
-ENV SRC_DIR=/go/src/github.com/MaksimYudenko/training
-# Add the source code:
-ADD . $SRC_DIR
-# Build it:
-RUN cd $SRC_DIR; go build -o training; cp training /app/
-#RUN cd $SRC_DIR; cp myapp /app/
-ENTRYPOINT ["./training"]
+FROM golang:1.12-alpine AS build_base
+EXPOSE 8080
+#EXPOSE 9090
+#EXPOSE 5432
+ENV SRC_DIR=/github.com/MaksimYudenko/training
+WORKDIR $SRC_DIR
+ENV GO111MODULE=on
+COPY go.mod .
+COPY go.sum .
+RUN apk add bash ca-certificates git gcc g++ libc-dev
+RUN go mod download
+FROM build_base AS builder
+COPY . .
+#RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 \
+#go install -a -tags netgo -ldflags '-w -extldflags "-static"' ./cmd/server
+#RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 \
+#go install -a -tags netgo -ldflags '-w -extldflags "-static"' ./cmd/client-grpc
+RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 \
+go install -a -tags netgo -ldflags '-w -extldflags "-static"' ./cmd/client-rest
+FROM alpine
+RUN apk add ca-certificates
+#COPY --from=builder /go/bin/server /bin/server
+#COPY --from=builder /go/bin/client-grpc /bin/client-grpc
+COPY --from=builder /go/bin/client-rest /bin/client-rest
 
-## iron/go is the alpine image with only ca-certificates added
-#FROM iron/go
-#WORKDIR /app
-## Now just add the binary
-#ADD myapp /app/
-#ENTRYPOINT ["./myapp"]
+#ENTRYPOINT ["./bin/server"]
+#ENTRYPOINT ["./bin/client-grpc"]
+ENTRYPOINT ["./bin/client-rest"]
+
+#ENTRYPOINT ["./bin/server","-grpc-port=9090","-http-port=8080", \
+#"-db-host=localhost", "-db-port=5432", "-db-name=training", \
+#"-db-user=maksim", "-db-password=yudenko", "-db-schema=public"]
+#ENTRYPOINT ["./bin/client-grpc","-server=localhost:9090"]
+#ENTRYPOINT ["./bin/client-rest","-server=http://localhost:8080"]

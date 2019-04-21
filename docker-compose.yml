@@ -1,0 +1,29 @@
+version: '3'
+services:
+  server:
+    build: ./cmd/server
+    ports:
+      - "8080:8080"
+      - "9090:9090"
+      - "5432:5432"
+  client-grpc:
+    build: ./cmd/client-grpc
+    network_mode: host
+    ports:
+      - "9090:9090"
+      - "5432:5432"
+
+  client-rest:
+    build: ./cmd/client-rest
+    network_mode: host
+    ports:
+      - "8080:8080"
+      - "5432:5432"
+
+  database:
+    build: ./cmd/
+    ports:
+      - "5432:5432"
+
+volumes:
+  server_db:

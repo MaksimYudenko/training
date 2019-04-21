@@ -1,8 +1,7 @@
 #!/bin/bash
 protoc \
--I=. \
 -I=api/proto/v1 \
--I=third_party \
+-I. \
 -I/usr/local/include \
 -I$GOPATH/src \
 -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
@@ -10,9 +9,8 @@ protoc \
 service.proto
 
 protoc \
--I=. \
 -I=api/proto/v1 \
--I=third_party \
+-I. \
 -I/usr/local/include \
 -I$GOPATH/src \
 -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
@@ -20,9 +18,8 @@ protoc \
 service.proto
 
 protoc \
--I=. \
 -I=api/proto/v1 \
--I=third_party \
+-I. \
 -I/usr/local/include \
 -I$GOPATH/src \
 -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \

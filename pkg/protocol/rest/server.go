@@ -8,10 +8,8 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"google.golang.org/grpc"
-
 	"github.com/MaksimYudenko/training/pkg/api/v1"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
 // RunServer runs HTTP/REST gateway
@@ -19,7 +17,7 @@ func RunServer(ctx context.Context, grpcPort, httpPort string) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithInsecure()}
+	opts := []DialOption{WithInsecure()}
 	if err := v1.RegisterTraineeServiceHandlerFromEndpoint(
 		ctx, mux, "localhost:"+grpcPort, opts); err != nil {
 		log.Fatalf("failed to start HTTP gateway: %v", err)
